@@ -1,0 +1,24 @@
+
+.user {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+.user_name{
+    color: green;
+
+}
+
+
+.user_age{
+    color: red;
+
+}
+
+
+
+.user_email{
+    color: blue;
+
+}

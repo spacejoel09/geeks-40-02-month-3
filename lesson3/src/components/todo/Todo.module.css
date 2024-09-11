@@ -1,0 +1,16 @@
+
+.li {
+    width: 500px;
+    height: 100px;
+    border: 1px solid red;
+    padding: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .info,
+    .btns {
+        display: flex;
+        gap: 20px;
+    }
+}

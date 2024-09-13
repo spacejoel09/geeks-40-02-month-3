@@ -1,8 +1,12 @@
 
 .user {
+    width: 400px;
     display: flex;
+    align-items: center;
     flex-direction: column;
     gap: 10px;
+    border:1px solid blue;
+    border-radius: 10px;
 
 }
 .user_name{

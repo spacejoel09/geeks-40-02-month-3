@@ -1,11 +1,11 @@
 import React from 'react';
 import classes from './button.module.css';
 
-const Button = ({ onClick, text }) => {
+
+const Button = ({name, color, action}) => {
+
     return (
-        <button onClick={onClick} className={classes.button}>
-            {text}
-        </button>
+        <button className={`${classes.btn} ${classes[color]}`} onClick={action}>{name}</button>
     );
 };
 

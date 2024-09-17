@@ -1,49 +1,101 @@
 import React from 'react';
-import {useForm} from "react-hook-form"
-import * as Yup from 'yup'
+import { useForm, Controller } from 'react-hook-form';
+import * as Yup from 'yup';
+import classes from './FormPage.module.css';
+import { yupResolver } from '@hookform/resolvers/yup';
 
+const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
-const FormPage =() => {
-    const {register, handleSubmit, watch
-    ,formState:{errors,isValid},
-    clearErrors,
-    reset} = useForm({
-        defaultValue: {
+const schema = Yup.object().shape({
+    name: Yup.string()
+        .required('Обязательное поле')
+        .min(2, 'Имя должно содержать минимум 2 символа'),
+    password: Yup.string()
+        .required('Обязательное поле')
+        .min(5, 'Пароль должен содержать минимум 5 символов'),
+    repeat: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
+        .required('Обязательное поле'),
+    email: Yup.string()
+        .email('Неверный формат email')
+        .matches(regex, 'Только @gmail.com разрешено')
+        .required('Обязательное поле'),
+});
 
-        },
-    })
-
-
-    const name = watch("name")
+const FormPage = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        control
+    } = useForm({
+        resolver: yupResolver(schema)
+    });
 
     const submit = (data) => {
-        console.log(submit)
-    }
+        console.log('Успешно:', data);
+    };
+
     const error = (data) => {
-        console.log(error)
-    }
+        console.log('Ошибки:', data);
+    };
 
-    return(
-        <div>
-            {/*{*/}
-            {/*    <h1{name}></h1>*/}
-            {/*}*/}
-            <form onSubmit={handleSubmit(submit, error)}>
+    return (
+        <div className={classes.container}>
+            <form className={classes.form} onSubmit={handleSubmit(submit, error)}>
+                <h2 className={classes.title}>Register with</h2>
 
-                <input type="text" placeholder="First Name"
-                                           {
-                    ...register('name')
-                                           }/>
-               <input type="text" placeholder="Age"
-                                           {
-                                               ...register('age')
-                                           }/>
-                <button onClick={() => {
-                    console.log()
-                }}>Отправить имя </button>
+                <div className="child">
+                    <label htmlFor="name" className={classes.label}>Name</label>
+                    <Controller
+                        name="name"
+                        control={control}
+                        render={({ field }) => (
+                            <input {...field} type="text" placeholder="Your full name" className={classes.input} />
+                        )}
+                    />
+                    {errors.name && <p className={classes.error}>{errors.name.message}</p>}
+                </div>
+
+                <div className="child">
+                    <label htmlFor="email" className={classes.label}>Email</label>
+                    <input
+                        id="email"
+                        type="text"
+                        placeholder="Your email"
+                        {...register('email')}
+                        className={classes.input}
+                    />
+                    {errors.email && <p className={classes.error}>{errors.email.message}</p>}
+                </div>
+
+                <div className="child">
+                    <label htmlFor="password" className={classes.label}>Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        placeholder="Your password"
+                        {...register('password')}
+                        className={classes.input}
+                    />
+                    {errors.password && <p className={classes.error}>{errors.password.message}</p>}
+                </div>
+                <div className="child">
+                    <label htmlFor="repeat" className={classes.label}>Re-Enter Password</label>
+                    <input
+                        id="repeat"
+                        type="password"
+                        placeholder="Re-enter password"
+                        {...register('repeat')}
+                        className={classes.input}
+                    />
+                    {errors.repeat && <p className={classes.error}>{errors.repeat.message}</p>}
+                </div>
+
+                <button className={classes.btn} type="submit">Submit</button>
             </form>
         </div>
-    )
-}
+    );
+};
 
-export  default FormPage
+export default FormPage;

@@ -1,121 +1,122 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as Yup from 'yup';
 import classes from './FormPage.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {postAxios} from "../studentsPage/StudentsPage";
+import axios from 'axios';
 
-const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+const regex = /^\d+$/;
+const regExEmail = new RegExp(/^[a-zA-Z\d-_\.]+@[a-zA-Z\d-_]+\.[a-zA-Z-_]{2,8}$/)
 
 const schema = Yup.object().shape({
-    name: Yup.string()
-        .required('Обязательное поле')
-        .min(2, 'Имя должно содержать минимум 2 символа'),
-    password: Yup.string()
-        .required('Обязательное поле')
-        .min(5, 'Пароль должен содержать минимум 5 символов'),
-    repeat: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
-        .required('Обязательное поле'),
-    email: Yup.string()
-        .email('Неверный формат email')
-        .matches(regex, 'Только @gmail.com разрешено')
-        .required('Обязательное поле'),
-});
-
-const FormPage = () => {
-    const BASE_URL = 'http://localhost:5000/student';
-    const [ user,SetUser ] = useState([]);
-
-    export const postAxios = async  (data, API)=> {
-        try{
-            const response = await axios.post(`${BASE_URL}`, data);
-            await getAPI("user").then(data=> response.data)
-        }catch(error){
-            console.log(error);
-        }
-        // const ans = response
-        // console.log(ans.data)
-    }
+    name: Yup.string().required('обязательное поле').min(2, 'Необходимо 2'),
+    email: Yup.string().required('обязательное поле').matches(regExEmail, 'не правильная почта'),
+    password: Yup.string().required('обязательное поле').matches(regex, 'только цифры').min(2, 'Необходимо 2'),
+    password2: Yup.string().oneOf([Yup.ref('password'), null, 'пароли должны совпадать'])});
+const FormPageDz = () => {
+    const [ users, setUsers ] = useState([]);
+    const BASE_URL = 'http://localhost:5000';
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        control
+        watch,
+        formState: { errors, isValid },
+        clearErrors,
+        setValue,
+        reset, control
     } = useForm({
+        defaultValues: {
+            age: 18,
+            name: 'Kuban'
+        },
         resolver: yupResolver(schema)
     });
-
+    const getAPI = async(API) => {
+        const response = await fetch(`${BASE_URL}/${API}/`);
+        const data = await response.json();
+        console.log(response);
+        console.log(data);
+        return data;
+    };
+    const postAPIAxios = async(API, data) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/${API}/`,
+                data
+            );
+            await getAPI('users').then(data => setUsers(data));
+            console.log(response.data, 'axios');
+        } catch(e) {
+            console.log(e.message)
+            alert(e.message);
+        }
+    };
     const submit = (data) => {
-        console.log('Успешно:', data);
-        postAxios("user", data)
+        console.log(data);
+        postAPIAxios('users', data)
     };
 
     const error = (data) => {
-        console.log('Ошибки:', data);
+        console.log(data);
     };
 
+    const name = watch('name');
+
+    console.log(errors);
     return (
-        <div className={classes.container}>
+        <div>
+            {
+                <h1>{name}</h1>
+            }
             <form className={classes.form} onSubmit={handleSubmit(submit, error)}>
-                <h2 className={classes.title}>Register with</h2>
-
-                <div className="child">
-                    <label htmlFor="name" className={classes.label}>Name</label>
-                    <Controller
-                        name="name"
-                        control={control}
-                        render={({ field }) => (
-                            <input {...field} type="text" placeholder="Your full name" className={classes.input} />
-                        )}
-                    />
-                    {errors.name && <p className={classes.error}>{errors.name.message}</p>}
-                </div>
-
-                <div className="child">
-                    <label htmlFor="email" className={classes.label}>Email</label>
-                    <input
-                        id="email"
-                        type="text"
-                        placeholder="Your email"
-                        {...register('email')}
-                        className={classes.input}
-                    />
-                    {errors.email && <p className={classes.error}>{errors.email.message}</p>}
-                </div>
-
-                <div className="child">
-                    <label htmlFor="password" className={classes.label}>Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="Your password"
-                        {...register('password')}
-                        className={classes.input}
-                    />
-                    {errors.password && <p className={classes.error}>{errors.password.message}</p>}
-                </div>
-                <div className="child">
-                    <label htmlFor="repeat" className={classes.label}>Re-Enter Password</label>
-                    <input
-                        id="repeat"
-                        type="password"
-                        placeholder="Re-enter password"
-                        {...register('repeat')}
-                        className={classes.input}
-                    />
-                    {errors.repeat && <p className={classes.error}>{errors.repeat.message}</p>}
-                </div>
-
-                <button className={classes.btn} type="submit">Submit</button>
+                <input
+                    type="text"
+                    placeholder="НАапишите имя"
+                    aria-invalid={errors.name ? true : false}
+                    {
+                        ...register('name')
+                    }
+                />
+                {
+                    errors?.name?.message && <p>{errors.name.message}</p>
+                }
+                <input type="text" placeholder="Напишите email"
+                       {
+                           ...register('email')
+                       }
+                       aria-invalid={errors.email ? true : false}
+                />
+                {
+                    errors?.email?.message && <p>{errors.email.message}</p>
+                }
+                <input type="text" placeholder="Напишите пароль"
+                       {
+                           ...register('password')
+                       }
+                       aria-invalid={errors.password ? true : false}
+                />
+                {
+                    errors?.password?.message && <p>{errors.password.message}</p>
+                }
+                <input type="text" placeholder="Повторите пароль"
+                       {
+                           ...register('password2')
+                       }
+                       aria-invalid={errors.password2 ? true : false}
+                />
+                {
+                    errors?.password2?.message && <p>{errors.password2.message}</p>
+                }
+                <button type="submit">Отправить</button>
             </form>
             {
                 users && users.map(user=> <div>
-                <p>user:{user.id}</p>
+                    <p>user: {user.name}</p>
                 </div>)
             }
         </div>
     );
 };
 
-export default FormPage;
+export default FormPageDz;

@@ -3,6 +3,8 @@ import UserPage from './UserPage';
 import TodoPage from './TodoPage';
 import FormPage from './FormPage/FormPage';
 import StudentPage from './studentsPage/StudentsPage';
+import StudentsPage from './PokemonPage/PokemonPage';
+import PokemonPage from "./PokemonPage/PokemonPage";
 
 
 const MainPage = () => {
@@ -15,7 +17,7 @@ const MainPage = () => {
 
     return (
         <>
-            <FormPage/>
+            <PokemonPage/>
         </>
     );
 };

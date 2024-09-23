@@ -1,0 +1,153 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    letter-spacing: 1.5px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+    width: 440px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 8px purple;
+}
+
+button {
+    width: 100px;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid purple;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+button:hover {
+    color: white;
+    background-color: purple;
+}
+
+button:active {
+    background-color: #8a2be2;
+}
+
+button.add {
+    background-color: white;
+    color: black;
+}
+
+button.clear, button.cancel, button.save {
+    background-color: purple;
+}
+.context{
+    margin-bottom: 50px;
+}
+
+button.clear:hover, button.cancel:hover, button.save:hover {
+    background-color: red;
+}
+
+.todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+li{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.todo-item {
+
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+    box-shadow: 0 0 10px purple;
+}
+
+
+.todo-item button {
+
+    background-color: black;
+    border: 1px solid purple;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+li{
+    margin-bottom: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+.todo-item button:hover {
+    background-color: red;
+}
+
+.todo-item button.edit {
+    background-color: purple;
+}
+
+.todo-item button.delete {
+    background-color: red;
+}
+input{
+    border-color: white;
+}
+
+
+.delete{
+    background: transparent;
+    width: 50px;
+    height: 40px;
+}
+.edit{
+    background: transparent !important;
+    margin-left: 100px !important;
+}
+.edit:hover{
+    background-color: purple !important;
+}
+
+.delete:hover{
+    background-color: purple;
+}
+
+button:disabled{
+    cursor: default;
+    color: gray;
+}

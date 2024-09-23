@@ -1,0 +1,28 @@
+.btn {
+    background-color: green;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+
+.primary {
+    border:1px solid green;
+    cursor: pointer;
+    margin: 10px;
+    color: white;
+    background-color: green;
+}
+
+.default {
+    margin: 10px;
+    border: 1px solid bisque;
+    color: white;
+    background-color: dodgerblue;
+}
+
+.error {
+    cursor: pointer;
+    border: 1px solid red;
+    margin: 10px;
+    background-color: red;
+    color: white;
+}

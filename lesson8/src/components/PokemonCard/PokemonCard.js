@@ -42,11 +42,6 @@ const PokemonCard = ({ pokemon }) => {
             <button className={classes.btn} onClick={() => console.log(`Подробнее о ${pokemon.name}`)}>
                 <p onClick={show} className={classes.btn_title}>подробнее</p>
             </button>
-            {
-                show && 
-                <PokemonModal handleShow={handleShow}></PokemonModal>
-
-            }
         </li>
     );
 };

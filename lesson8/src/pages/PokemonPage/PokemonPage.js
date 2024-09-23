@@ -9,14 +9,6 @@ const PokemonList = () => {
     const limit = 12
     const {offset,setOffset} = useState(0);
     const page = Math.floor(offset / limit) + 1
-    const handlePrev = () => {
-        if (offset > 0) return;
-        setOffset(prev => prevState - limit);
-
-    }
-    const handleNext = () => {
-        return setOffset(next  => prevState + limit);
-    }
 
 
 
@@ -30,10 +22,6 @@ const PokemonList = () => {
         }
     };
 
-    useEffect(() => {
-        fetchPokemonList();
-    }, [offset]);
-
     return (
         <div className={classes.wrapper}>
             <h1 className={classes.title}>Pokemon</h1>
@@ -43,7 +31,6 @@ const PokemonList = () => {
                 <PokemonCard key={index} pokemon={pokemon} />
             ))}
         </ul>
-            <Pagination next={handleNext} prev={handlePrev} page={page}/>
         </div>
 
     );
